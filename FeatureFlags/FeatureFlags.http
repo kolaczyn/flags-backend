@@ -1,6 +1,0 @@
-@FeatureFlags_HostAddress = http://localhost:5285
-
-GET {{FeatureFlags_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

@@ -1,3 +1,4 @@
+using FeatureFlags.Application.UseCases;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FeatureFlags.Controllers;
@@ -8,24 +9,9 @@ public class FlagsController : ControllerBase
 {
     [HttpGet()]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public IActionResult GetFlags() => Ok(getFlags());
-
-
-    private FlagsDto[] getFlags() =>
-    [
-        new()
-        {
-            Id = Guid.NewGuid()
-                .ToString(),
-            Value = true,
-            Label = "greetUser"
-        },
-        new()
-        {
-            Id = Guid.NewGuid()
-                .ToString(),
-            Value = false,
-            Label = "aboutSection"
-        }
-    ];
+    public IActionResult GetFlags([FromServices] GetAllFlagsUseCase useCase)
+    {
+        var result = useCase.Execute();
+        return Ok(result);
+    }
 }
