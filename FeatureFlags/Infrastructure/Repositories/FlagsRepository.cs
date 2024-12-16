@@ -5,21 +5,28 @@ namespace FeatureFlags.Infrastructure.Repositories;
 
 public class FlagsRepository : IFlagsRepository
 {
-    public FlagDomain[] GetAll() =>
-    [
-        new()
-        {
-            Id = Guid.NewGuid()
-                .ToString(),
-            Value = true,
-            Label = "greetUser"
-        },
-        new()
-        {
-            Id = Guid.NewGuid()
-                .ToString(),
-            Value = false,
-            Label = "aboutSection"
-        }
-    ];
+    private static readonly FlagDomain[] _flags;
+
+    static FlagsRepository()
+    {
+        _flags =
+        [
+            new FlagDomain
+            {
+                Id = Guid.NewGuid()
+                    .ToString(),
+                Value = true,
+                Label = "greetUser"
+            },
+            new FlagDomain
+            {
+                Id = Guid.NewGuid()
+                    .ToString(),
+                Value = false,
+                Label = "aboutSection"
+            }
+        ];
+    }
+
+    public FlagDomain[] GetAll() => _flags;
 }
