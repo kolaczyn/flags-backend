@@ -1,6 +1,7 @@
 using FeatureFlags.Application.UseCases;
 using FeatureFlags.Domain.Repositories;
 using FeatureFlags.Infrastructure.Repositories;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.MapScalarApiReference(options => options.WithTheme(ScalarTheme.DeepSpace));
 }
 
 app.UseHttpsRedirection();
