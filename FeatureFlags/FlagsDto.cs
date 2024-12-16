@@ -1,6 +1,6 @@
 namespace FeatureFlags;
 
-public class FeatureDto
+public class FlagsDto
 {
     public required string Id { get; init; }
     public required string Label { get; init; }
