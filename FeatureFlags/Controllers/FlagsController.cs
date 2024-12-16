@@ -1,4 +1,7 @@
+using System.Net;
+using FeatureFlags.Application.Dto;
 using FeatureFlags.Application.UseCases;
+using FeatureFlags.Domain.Errors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FeatureFlags.Controllers;
@@ -7,11 +10,28 @@ namespace FeatureFlags.Controllers;
 [Route("[controller]")]
 public class FlagsController : ControllerBase
 {
-    [HttpGet()]
+    [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public IActionResult GetFlags([FromServices] GetAllFlagsUseCase useCase)
     {
         var result = useCase.Execute();
         return Ok(result);
+    }
+
+    [HttpPatch("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public IActionResult PatchFlag([FromRoute] string id, [FromBody] PatchFlagDto dto,
+        [FromServices] PatchFlagUseCase useCase)
+    {
+        var (result, err) = useCase.Execute(id, dto);
+
+        if (err == null) return Ok(result);
+
+        return err switch
+        {
+            FlagDoesNotExist => NotFound(err),
+            _ => StatusCode((int)HttpStatusCode.InternalServerError)
+        };
     }
 }
