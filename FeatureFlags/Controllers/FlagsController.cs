@@ -12,9 +12,9 @@ public class FlagsController : ControllerBase
 {
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public IActionResult GetFlags([FromServices] GetAllFlagsUseCase useCase)
+    public async Task<IActionResult> GetFlags([FromServices] GetAllFlagsUseCase useCase)
     {
-        var result = useCase.Execute();
+        var result = await useCase.Execute();
         return Ok(result);
     }
 

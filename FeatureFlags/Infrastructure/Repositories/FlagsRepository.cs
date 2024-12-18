@@ -1,11 +1,15 @@
+using Dapper;
 using FeatureFlags.Domain.Errors;
 using FeatureFlags.Domain.Models;
 using FeatureFlags.Domain.Repositories;
+using Npgsql;
 
 namespace FeatureFlags.Infrastructure.Repositories;
 
 public class FlagsRepository : IFlagsRepository
 {
+    private NpgsqlConnection _connection;
+
     private FlagDomain[] _flags =
     [
         new()
@@ -22,7 +26,12 @@ public class FlagsRepository : IFlagsRepository
         }
     ];
 
-    public FlagDomain[] GetAll() => _flags;
+    public async Task<FlagDomain[]> GetAll()
+    {
+        var rows = await TestConnection();
+        Console.WriteLine($"Got: {rows}");
+        return _flags;
+    }
 
     public (FlagDomain?, IAppError?) PatchFlag(string id, bool value)
     {
@@ -41,5 +50,19 @@ public class FlagsRepository : IFlagsRepository
         }
 
         return (found, null);
+    }
+
+    // TODO refactor this later
+    private static NpgsqlConnection GetConnection()
+    {
+        const string connectionString = "Host=localhost;Username=postgres;Password=12345678;Database=postgres";
+        return new NpgsqlConnection(connectionString);
+    }
+
+    private async Task<string> TestConnection()
+    {
+        await using var connection = GetConnection();
+        var result = await connection.QueryFirstAsync<string>("SELECT 'Hello World'");
+        return result ?? "Nothing";
     }
 }
