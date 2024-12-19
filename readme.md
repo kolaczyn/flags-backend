@@ -2,7 +2,8 @@
 
 ## Notes
 
-- [ ] checkout how to use minimal in routes
+- [x] use minimal api
+    - [ ] After upgrade, there seems to be data in openapi specification. How to reintroduce it?
 - [ ] add mapper (don't want to write the code myself)
 - [ ] unit tests
 - [ ] test containers

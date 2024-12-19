@@ -1,3 +1,4 @@
+using FeatureFlags.Api;
 using FeatureFlags.Application.UseCases;
 using FeatureFlags.Domain.Repositories;
 using FeatureFlags.Infrastructure.Repositories;
@@ -24,6 +25,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapControllers();
+app.MapGetAllFlagsEndpoint();
+app.MapPatchFlagEndpointExtension();
 
 app.Run();
