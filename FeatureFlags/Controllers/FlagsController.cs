@@ -12,9 +12,9 @@ public class FlagsController : ControllerBase
 {
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetFlags([FromServices] GetAllFlagsUseCase useCase)
+    public async Task<IActionResult> GetFlags([FromServices] GetAllFlagsUseCase useCase, CancellationToken ct)
     {
-        var result = await useCase.Execute();
+        var result = await useCase.Execute(ct);
         return Ok(result);
     }
 
@@ -22,9 +22,9 @@ public class FlagsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public IActionResult PatchFlag([FromRoute] string id, [FromBody] PatchFlagCommand command,
-        [FromServices] PatchFlagUseCase useCase)
+        [FromServices] PatchFlagUseCase useCase, CancellationToken ct)
     {
-        var (result, err) = useCase.Execute(id, command);
+        var (result, err) = useCase.Execute(id, command, ct);
 
         if (err == null) return Ok(result);
 

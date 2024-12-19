@@ -17,14 +17,14 @@ public class FlagsRepository : IFlagsRepository
         new(Id: "2", Label: "aboutSection", Value: false)
     ];
 
-    public async Task<FlagDomain[]> GetAll()
+    public async Task<FlagDomain[]> GetAll(CancellationToken ct)
     {
-        var rows = await TestConnection();
+        var rows = await TestConnection(ct);
         Console.WriteLine($"Got: {rows}");
         return _flags;
     }
 
-    public (FlagDomain?, IAppError?) PatchFlag(string id, bool value)
+    public (FlagDomain?, IAppError?) PatchFlag(string id, bool value, CancellationToken ct)
     {
         var found = _flags.FirstOrDefault(x => x.Id == id);
         if (found == null)
@@ -51,10 +51,10 @@ public class FlagsRepository : IFlagsRepository
         return new NpgsqlConnection(connectionString);
     }
 
-    private async Task<string> TestConnection()
+    private async Task<string> TestConnection(CancellationToken ct)
     {
         await using var connection = GetConnection();
-        var result = await connection.QueryFirstAsync<string>("SELECT 'Hello World'");
+        var result = await connection.QueryFirstAsync<string>("SELECT 'Hello World'", ct);
         return result ?? "Nothing";
     }
 }

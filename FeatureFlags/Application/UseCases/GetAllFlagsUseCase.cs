@@ -6,9 +6,9 @@ namespace FeatureFlags.Application.UseCases;
 
 public class GetAllFlagsUseCase(IFlagsRepository repository)
 {
-    public async Task<IEnumerable<FlagDto>> Execute()
+    public async Task<IEnumerable<FlagDto>> Execute(CancellationToken ct)
     {
-        var result = await repository.GetAll();
+        var result = await repository.GetAll(ct);
         return result.Select(x => x.ToDto());
     }
 }

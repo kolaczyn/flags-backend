@@ -5,6 +5,6 @@ namespace FeatureFlags.Domain.Repositories;
 
 public interface IFlagsRepository
 {
-    public Task<FlagDomain[]> GetAll();
-    public (FlagDomain?, IAppError?) PatchFlag(string id, bool value);
+    public Task<FlagDomain[]> GetAll(CancellationToken ct);
+    public (FlagDomain?, IAppError?) PatchFlag(string id, bool value, CancellationToken ct);
 }
