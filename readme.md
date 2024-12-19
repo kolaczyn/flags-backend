@@ -18,3 +18,4 @@
     - [ ] albo dodajemy metodę do domeny (klasowe podejście)
 - [ ] być może zrobić że model == instrastructure
 - [ ] zobaczyć jakie flagi kompilacyjnego mogę ustawić (zmienić warning na error na przykład)
+- [ ] authentication
