@@ -5,10 +5,5 @@ namespace FeatureFlags.Application.Mappers;
 
 public static class FlagMapper
 {
-    public static FlagDto ToDto(this FlagDomain domain) => new()
-    {
-        Id = domain.Id,
-        Label = domain.Label,
-        Value = domain.Value,
-    };
+    public static FlagDto ToDto(this FlagDomain x) => new(Id: x.Id, Label: x.Label, Value: x.Value);
 }

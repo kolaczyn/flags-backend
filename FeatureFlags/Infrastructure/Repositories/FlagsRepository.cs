@@ -1,3 +1,4 @@
+using System.Reflection.Emit;
 using Dapper;
 using FeatureFlags.Domain.Errors;
 using FeatureFlags.Domain.Models;
@@ -12,18 +13,8 @@ public class FlagsRepository : IFlagsRepository
 
     private FlagDomain[] _flags =
     [
-        new()
-        {
-            Id = "1",
-            Value = true,
-            Label = "greetUser"
-        },
-        new()
-        {
-            Id = "2",
-            Value = false,
-            Label = "aboutSection"
-        }
+        new(Id: "1", Label: "greetUser", Value: true),
+        new(Id: "2", Label: "aboutSection", Value: false)
     ];
 
     public async Task<FlagDomain[]> GetAll()
@@ -41,21 +32,22 @@ public class FlagsRepository : IFlagsRepository
             return (null, new FlagDoesNotExist());
         }
 
-        foreach (var flag in _flags)
-        {
-            if (flag.Id == id)
-            {
-                flag.Value = value;
-            }
-        }
+        _flags = _flags.Select(x => x.Id == id ? new FlagDomain(Id: id, Label: x.Label, Value: value) : x).ToArray();
 
-        return (found, null);
+        var foundAfterChange = _flags.FirstOrDefault(x => x.Id == id)!;
+
+
+        return (foundAfterChange, null);
     }
 
-    // TODO refactor this later
+// TODO refactor this later
     private static NpgsqlConnection GetConnection()
     {
         const string connectionString = "Host=localhost;Username=postgres;Password=12345678;Database=postgres";
+        // NpgsqlDataSource.create lepiej reużywa połączenia
+        // Npgsql.DepndencyInjection
+
+
         return new NpgsqlConnection(connectionString);
     }
 

@@ -9,7 +9,7 @@ builder.Services.AddOpenApi().AddControllers();
 {
     builder.Services.AddTransient<GetAllFlagsUseCase>();
     builder.Services.AddTransient<PatchFlagUseCase>();
-    // This should be transient, but I'm storing data and I want it to be the same across all requests 
+    // TODO This should be transient, but I'm storing data and I want it to be the same across all requests 
     builder.Services.AddSingleton<IFlagsRepository, FlagsRepository>();
 }
 

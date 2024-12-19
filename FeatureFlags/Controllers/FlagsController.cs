@@ -21,10 +21,10 @@ public class FlagsController : ControllerBase
     [HttpPatch("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public IActionResult PatchFlag([FromRoute] string id, [FromBody] PatchFlagDto dto,
+    public IActionResult PatchFlag([FromRoute] string id, [FromBody] PatchFlagCommand command,
         [FromServices] PatchFlagUseCase useCase)
     {
-        var (result, err) = useCase.Execute(id, dto);
+        var (result, err) = useCase.Execute(id, command);
 
         if (err == null) return Ok(result);
 
