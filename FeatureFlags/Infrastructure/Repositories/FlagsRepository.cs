@@ -1,4 +1,3 @@
-using System.Reflection.Emit;
 using Dapper;
 using FeatureFlags.Domain.Errors;
 using FeatureFlags.Domain.Models;
@@ -7,7 +6,7 @@ using Npgsql;
 
 namespace FeatureFlags.Infrastructure.Repositories;
 
-public class FlagsRepository : IFlagsRepository
+public sealed class FlagsRepository : IFlagsRepository
 {
     private NpgsqlConnection _connection;
 

@@ -4,7 +4,7 @@ using FeatureFlags.Domain.Repositories;
 
 namespace FeatureFlags.Application.UseCases;
 
-public class GetAllFlagsUseCase(IFlagsRepository repository)
+public sealed class GetAllFlagsUseCase(IFlagsRepository repository)
 {
     public async Task<IEnumerable<FlagDto>> Execute(CancellationToken ct)
     {
