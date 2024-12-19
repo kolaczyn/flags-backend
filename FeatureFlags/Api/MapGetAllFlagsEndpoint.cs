@@ -1,3 +1,4 @@
+using FeatureFlags.Application.Dto;
 using FeatureFlags.Application.UseCases;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,6 +13,6 @@ public static class MapGetAllFlagsEndpointExtensions
         {
             var result = await useCase.Execute(ct);
             return Results.Ok(result);
-        });
+        }).Produces<IEnumerable<FlagDto>>();
     }
 }

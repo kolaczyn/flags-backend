@@ -3,7 +3,7 @@
 ## Notes
 
 - [x] use minimal api
-    - [ ] After upgrade, there seems to be data in openapi specification. How to reintroduce it?
+    - [x] Added return types and status code
 - [ ] add mapper (don't want to write the code myself)
 - [ ] unit tests
 - [ ] test containers
