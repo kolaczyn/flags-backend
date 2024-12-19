@@ -19,3 +19,4 @@
 - [ ] być może zrobić że model == instrastructure
 - [ ] zobaczyć jakie flagi kompilacyjnego mogę ustawić (zmienić warning na error na przykład)
 - [ ] authentication
+- [x] database connection string from appsettings

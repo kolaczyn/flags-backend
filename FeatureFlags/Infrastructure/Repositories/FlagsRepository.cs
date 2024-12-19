@@ -6,9 +6,10 @@ using Npgsql;
 
 namespace FeatureFlags.Infrastructure.Repositories;
 
-public sealed class FlagsRepository : IFlagsRepository
+public sealed class FlagsRepository(IConfiguration configuration) : IFlagsRepository
 {
-    private NpgsqlConnection _connection;
+    private readonly IConfiguration _configuration = configuration;
+    // private NpgsqlConnection _connection;
 
     private FlagDomain[] _flags =
     [
@@ -39,15 +40,17 @@ public sealed class FlagsRepository : IFlagsRepository
         return (foundAfterChange, null);
     }
 
-// TODO refactor this later
-    private static NpgsqlConnection GetConnection()
+    private string ConnectionString() =>
+        // TODO I should throw error if it's null
+        _configuration.GetConnectionString("PostgresConnection")!;
+
+    // TODO refactor this later
+    private NpgsqlConnection GetConnection()
     {
-        const string connectionString = "Host=localhost;Username=postgres;Password=12345678;Database=postgres";
         // NpgsqlDataSource.create lepiej reużywa połączenia
         // Npgsql.DepndencyInjection
 
-
-        return new NpgsqlConnection(connectionString);
+        return new NpgsqlConnection(ConnectionString());
     }
 
     private async Task<string> TestConnection(CancellationToken ct)
