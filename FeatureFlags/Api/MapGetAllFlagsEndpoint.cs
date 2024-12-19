@@ -8,7 +8,7 @@ public static class MapGetAllFlagsEndpointExtensions
 {
     public static void MapGetAllFlagsEndpoint(this WebApplication app)
     {
-        app.MapGet("", async Task<IResult>
+        app.MapGet("flags", async Task<IResult>
             ([FromServices] GetAllFlagsUseCase useCase, CancellationToken ct) =>
         {
             var result = await useCase.Execute(ct);

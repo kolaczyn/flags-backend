@@ -9,7 +9,7 @@ public static class MapPatchFlagEndpointExtensions
 {
     public static void MapPatchFlagEndpointExtension(this WebApplication app)
     {
-        app.MapPatch("{id}", Task<IResult>
+        app.MapPatch("flags/{id}", Task<IResult>
             ([FromRoute] string id, [FromBody] PatchFlagCmd cmd,
                 [FromServices] PatchFlagUseCase useCase, CancellationToken ct) =>
             {
