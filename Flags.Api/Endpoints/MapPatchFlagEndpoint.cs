@@ -1,6 +1,5 @@
 using Flags.Application.Dto;
 using Flags.Application.UseCases;
-using Flags.Domain.Errors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Flags.Api.Endpoints;
@@ -13,15 +12,13 @@ public static class MapPatchFlagEndpointExtensions
             ([FromRoute] string id, [FromBody] PatchFlagCmd cmd,
                 [FromServices] PatchFlagUseCase useCase, CancellationToken ct) =>
             {
-                var (result, err) = useCase.Execute(id, cmd, ct);
-
-                if (err == null) return Task.FromResult(Results.Ok(result));
-
-                return Task.FromResult(err switch
+                var result = useCase.Execute(id, cmd, ct);
+                return result switch
                 {
-                    FlagDoesNotExist => Results.NotFound(err),
-                    _ => Results.InternalServerError()
-                });
+                    { IsSuccess: true } => Task.FromResult(Results.Ok(result.Value)),
+                    // TODO I should throw 500 in case something unexpected happens
+                    _ => Task.FromResult(Results.NotFound())
+                };
             })
             .Produces<FlagDto>()
             .Produces(StatusCodes.Status404NotFound);

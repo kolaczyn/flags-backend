@@ -1,7 +1,12 @@
+using FluentResults;
+
 namespace Flags.Domain.Errors;
 
-public sealed class FlagDoesNotExist : IAppError
+public sealed class FlagDoesNotExist : Error
 {
-    public int Id { get; init; } = 404_0;
-    public string Message { get; init; } = "Flag does not exist";
+    public FlagDoesNotExist()
+        : base("Flag does not exist")
+    {
+        WithMetadata("ErrorCode", "404_0");
+    }
 }

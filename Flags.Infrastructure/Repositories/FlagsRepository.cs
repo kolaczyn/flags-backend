@@ -2,6 +2,7 @@ using Dapper;
 using Flags.Domain.Errors;
 using Flags.Domain.Models;
 using Flags.Domain.Repositories;
+using FluentResults;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 
@@ -25,20 +26,19 @@ public sealed class FlagsRepository(IConfiguration configuration) : IFlagsReposi
         return _flags;
     }
 
-    public (FlagDomain?, IAppError?) PatchFlag(string id, bool value, CancellationToken ct)
+    public Result<FlagDomain> PatchFlag(string id, bool value, CancellationToken ct)
     {
         var found = _flags.FirstOrDefault(x => x.Id == id);
         if (found == null)
         {
-            return (null, new FlagDoesNotExist());
+            return Result.Fail<FlagDomain>(new FlagDoesNotExist());
         }
 
         _flags = _flags.Select(x => x.Id == id ? new FlagDomain(Id: id, Label: x.Label, Value: value) : x).ToArray();
 
         var foundAfterChange = _flags.FirstOrDefault(x => x.Id == id)!;
 
-
-        return (foundAfterChange, null);
+        return Result.Ok<FlagDomain>(foundAfterChange);
     }
 
     private string ConnectionString() =>

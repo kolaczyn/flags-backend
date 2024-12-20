@@ -2,16 +2,16 @@ using Flags.Application.Dto;
 using Flags.Application.Mappers;
 using Flags.Domain.Errors;
 using Flags.Domain.Repositories;
+using FluentResults;
 
 namespace Flags.Application.UseCases;
 
 public sealed class PatchFlagUseCase(IFlagsRepository repository)
 {
-    public (FlagDto?, IAppError?) Execute(string id, PatchFlagCmd cmd, CancellationToken ct)
+    public Result<FlagDto> Execute(string id, PatchFlagCmd cmd, CancellationToken ct)
     {
-        var (result, err) = repository.PatchFlag(id, cmd.Value, ct);
+        var result = repository.PatchFlag(id, cmd.Value, ct);
 
-        var domain = result?.ToDto();
-        return (domain, err);
+        return result.Map(x => x.ToDto());
     }
 }
