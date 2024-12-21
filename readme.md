@@ -2,10 +2,10 @@
 
 ## Todo list for setting things up
 
-- [ ] unit tests
-- [ ] test containers
 - [ ] fluent validation
 - [ ] authentication
+- [x] unit tests
+- [ ] test containers
 - [x] use minimal api
 - [x] add return types and status code
 - [x] fluent results

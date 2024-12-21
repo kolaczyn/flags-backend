@@ -2,12 +2,17 @@ using Flags.Application.Dto;
 using Flags.Tests.Common;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Testcontainers.PostgreSql;
 
 namespace Flags.Tests.Endpoints;
 
 public sealed class GetAllFlagsTest(WebApplicationFactory<Program> factory)
-    : IClassFixture<WebApplicationFactory<Program>>
+    : IClassFixture<WebApplicationFactory<Program>>, IAsyncLifetime
 {
+    private readonly PostgreSqlContainer _postgres = new PostgreSqlBuilder()
+        .WithImage("postgres:15-alpine")
+        .Build();
+
     [Fact]
     public async Task ShouldReturnAllFlags()
     {
@@ -23,9 +28,10 @@ public sealed class GetAllFlagsTest(WebApplicationFactory<Program> factory)
     }
 
     [Fact]
-    // This is not a really a good test, but it's good enough for now :)
+// This is not a really a good test, but it's good enough for now :)
     public async Task ShouldPatchNewValueToFlag()
     {
+        var conn = _postgres.GetConnectionString();
         var client = factory.CreateClient();
 
         // Check the state of the flags
@@ -65,5 +71,15 @@ public sealed class GetAllFlagsTest(WebApplicationFactory<Program> factory)
                 second => second.Value.Should().BeFalse()
             );
         }
+    }
+
+    public Task InitializeAsync()
+    {
+        return _postgres.StartAsync();
+    }
+
+    public Task DisposeAsync()
+    {
+        return _postgres.DisposeAsync().AsTask();
     }
 }
