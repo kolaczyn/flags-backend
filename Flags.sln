@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flags.Api", "Flags.Api\Flags.Api.csproj", "{B0DEC3DD-1891-4913-A380-611FA0BAFD3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example", "Example\Example.csproj", "{B10D253E-788F-45D5-A288-07C5A2502BB7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flags.Api.Integration", "Flags.Api.Integration\Flags.Api.Integration.csproj", "{B10D253E-788F-45D5-A288-07C5A2502BB7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F0CBAF14-CA73-4DD4-8003-30758764AD65}"
 EndProject

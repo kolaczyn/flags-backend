@@ -1,6 +1,6 @@
 ﻿using Flags.Application.RemoveLater;
 
-namespace Tests;
+namespace Flags.Tests;
 
 public class CalculatorTest
 {
