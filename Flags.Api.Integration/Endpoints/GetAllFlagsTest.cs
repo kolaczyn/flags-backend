@@ -2,12 +2,14 @@ using Flags.Application.Dto;
 using Flags.Tests.Common;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Testcontainers.PostgreSql;
 
 namespace Flags.Tests.Endpoints;
 
-public sealed class GetAllFlagsTest(WebApplicationFactory<Program> factory)
-    : IClassFixture<WebApplicationFactory<Program>>, IAsyncLifetime
+public sealed class GetAllFlagsTest(FlagsApplicationFactory factory)
+    : IClassFixture<FlagsApplicationFactory>, IAsyncLifetime
 {
     private readonly PostgreSqlContainer _postgres = new PostgreSqlBuilder()
         .WithImage("postgres:15-alpine")
@@ -17,6 +19,11 @@ public sealed class GetAllFlagsTest(WebApplicationFactory<Program> factory)
     public async Task ShouldReturnAllFlags()
     {
         var client = factory.CreateClient();
+        // using (var scope = factory.Services.CreateScope())
+        // {
+        //     var scopedServices = scope.ServiceProvider;
+        //     scopedServices.GetRequiredService<IOptions>();
+        // }
 
         var response = await client.GetAsync("/flags");
         response.EnsureSuccessStatusCode();

@@ -28,5 +28,9 @@
         <ProjectReference Include="..\Flags.Infrastructure\Flags.Infrastructure.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <None Include="appsettings.integration.json" />
+    </ItemGroup>
+
 
 </Project>

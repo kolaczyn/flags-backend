@@ -22,3 +22,5 @@
 - https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-9.0
 - https://medium.com/c-sharp-programming/the-basics-of-net-integration-testing-2ad1a0de54ed
     - this is the winner
+- http://disq.us/p/2xlabbr 
+

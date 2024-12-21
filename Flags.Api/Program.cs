@@ -31,6 +31,7 @@ app.MapPatchFlagEndpointExtension();
 app.Run();
 
 // Needed for test
+// ReSharper disable once ClassNeverInstantiated.Global
 public partial class Program
 {
 }
