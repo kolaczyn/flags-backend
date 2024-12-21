@@ -19,11 +19,6 @@ public sealed class GetAllFlagsTest(FlagsApplicationFactory factory)
     public async Task ShouldReturnAllFlags()
     {
         var client = factory.CreateClient();
-        // using (var scope = factory.Services.CreateScope())
-        // {
-        //     var scopedServices = scope.ServiceProvider;
-        //     scopedServices.GetRequiredService<IOptions>();
-        // }
 
         var response = await client.GetAsync("/flags");
         response.EnsureSuccessStatusCode();
@@ -38,7 +33,6 @@ public sealed class GetAllFlagsTest(FlagsApplicationFactory factory)
 // This is not a really a good test, but it's good enough for now :)
     public async Task ShouldPatchNewValueToFlag()
     {
-        var conn = _postgres.GetConnectionString();
         var client = factory.CreateClient();
 
         // Check the state of the flags

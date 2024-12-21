@@ -13,7 +13,7 @@ public sealed class FlagsApplicationFactory : WebApplicationFactory<Program>
         {
             config.Sources.Add(new JsonConfigurationSource
             {
-                Path = "appsettings.integration.json",
+                Path = "appsettings.Integration.json",
                 Optional = false,
                 ReloadOnChange = true,
                 FileProvider = new PhysicalFileProvider(Environment.CurrentDirectory)

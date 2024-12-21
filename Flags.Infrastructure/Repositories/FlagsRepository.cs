@@ -51,8 +51,7 @@ public sealed class FlagsRepository(IConfiguration configuration) : IFlagsReposi
         // NpgsqlDataSource.create lepiej reużywa połączenia
         // Npgsql.DependencyInjection
 // 
-        // return new NpgsqlConnection(ConnectionString());
-        return new NpgsqlConnection("Host=127.0.0.1;Port=32794;Database=postgres;Username=postgres;Password=postgres");
+        return new NpgsqlConnection(ConnectionString());
     }
 
     private async Task<string> TestConnection(CancellationToken ct)
