@@ -50,7 +50,7 @@ public sealed class FlagsRepository(IConfiguration configuration) : IFlagsReposi
     {
         // NpgsqlDataSource.create lepiej reużywa połączenia
         // Npgsql.DependencyInjection
-
+// 
         return new NpgsqlConnection(ConnectionString());
     }
 
