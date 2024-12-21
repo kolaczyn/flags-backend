@@ -29,3 +29,8 @@ app.MapGetAllFlagsEndpoint();
 app.MapPatchFlagEndpointExtension();
 
 app.Run();
+
+// Needed for test
+public partial class Program
+{
+}

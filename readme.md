@@ -13,3 +13,11 @@
 - [x] podzielić na parę projektów
 - [x] zamienić Dto na record
 - [x] database connection string from appsettings
+
+## Notes
+
+### Testing
+
+- https://github.com/alex289/CleanArchitecture/blob/main/CleanArchitecture.IntegrationTests/Fixtures/TestFixtureBase.cs#L8
+- https://medium.com/c-sharp-programming/the-basics-of-net-integration-testing-2ad1a0de54ed
+- https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-9.0
