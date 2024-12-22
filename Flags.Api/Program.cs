@@ -1,7 +1,9 @@
 using Flags.Api.Endpoints;
 using Flags.Application.UseCases;
 using Flags.Domain.Repositories;
+using Flags.Infrastructure.EFCore;
 using Flags.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +14,11 @@ builder.Services.AddOpenApi().AddControllers();
     builder.Services.AddTransient<PatchFlagUseCase>();
     // TODO This should be transient, but I'm storing data and I want it to be the same across all requests 
     builder.Services.AddSingleton<IFlagsRepository, FlagsRepository>();
+
+    builder.Services.AddDbContextPool<FeatureContext>(options =>
+        options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection"),
+            b => b.MigrationsAssembly("Flags.Api"))
+    );
 }
 
 var app = builder.Build();

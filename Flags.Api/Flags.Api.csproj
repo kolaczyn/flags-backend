@@ -8,12 +8,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Dapper" Version="2.1.35"/>
-        <PackageReference Include="FluentResults" Version="3.16.0"/>
-        <PackageReference Include="FluentValidation" Version="11.11.0"/>
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0"/>
-        <PackageReference Include="Npgsql" Version="9.0.2"/>
-        <PackageReference Include="Scalar.AspNetCore" Version="1.2.57"/>
+        <PackageReference Include="Dapper" Version="2.1.35" />
+        <PackageReference Include="FluentResults" Version="3.16.0" />
+        <PackageReference Include="FluentValidation" Version="11.11.0" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+          <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="Npgsql" Version="9.0.2" />
+        <PackageReference Include="Scalar.AspNetCore" Version="1.2.57" />
     </ItemGroup>
 
     <ItemGroup>
@@ -23,13 +27,13 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Flags.Application\Flags.Application.csproj"/>
-        <ProjectReference Include="..\Flags.Domain\Flags.Domain.csproj"/>
-        <ProjectReference Include="..\Flags.Infrastructure\Flags.Infrastructure.csproj"/>
+        <ProjectReference Include="..\Flags.Application\Flags.Application.csproj" />
+        <ProjectReference Include="..\Flags.Domain\Flags.Domain.csproj" />
+        <ProjectReference Include="..\Flags.Infrastructure\Flags.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="appsettings.Integration.json"/>
+        <None Include="appsettings.Integration.json" />
     </ItemGroup>
 
 
