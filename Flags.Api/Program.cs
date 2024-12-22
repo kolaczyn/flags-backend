@@ -12,6 +12,7 @@ builder.Services.AddOpenApi().AddControllers();
 {
     builder.Services.AddTransient<GetAllFlagsUseCase>();
     builder.Services.AddTransient<PatchFlagUseCase>();
+    builder.Services.AddTransient<PostFlagUseCase>();
     builder.Services.AddTransient<IFlagsRepository, FlagsRepository>();
 
     builder.Services.AddDbContextPool<FlagsContext>(options =>
@@ -32,6 +33,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.MapGetAllFlagsEndpoint();
+app.MapPostFlagEndpointExtension();
 app.MapPatchFlagEndpointExtension();
 
 app.Run();

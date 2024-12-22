@@ -16,6 +16,17 @@ public sealed class FlagsRepository(FlagsContext flagsContext) : IFlagsRepositor
         return await flagsContext.Set<FlagDb>().Select(x => x.ToDomain()).ToArrayAsync(ct);
     }
 
+    public async Task<Result<FlagDomain>> PostFlag(string label, CancellationToken ct)
+    {
+        var flag = new FlagDb { Label = label, Enabled = false };
+        await flagsContext.Set<FlagDb>().AddAsync(flag, ct);
+
+        await flagsContext.SaveChangesAsync(ct);
+
+        return Result.Ok(flag.ToDomain());
+    }
+
+
     public async Task<Result<FlagDomain>> PatchFlag(string id, bool value, CancellationToken ct)
     {
         var idInt = int.Parse(id);
