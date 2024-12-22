@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Flags.Api.Migrations
 {
-    [DbContext(typeof(FeatureContext))]
+    [DbContext(typeof(FlagsContext))]
     partial class FeatureContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

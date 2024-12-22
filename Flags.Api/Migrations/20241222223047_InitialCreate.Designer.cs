@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Flags.Api.Migrations
 {
-    [DbContext(typeof(FeatureContext))]
+    [DbContext(typeof(FlagsContext))]
     [Migration("20241222223047_InitialCreate")]
     partial class InitialCreate
     {

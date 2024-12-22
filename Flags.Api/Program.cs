@@ -12,10 +12,9 @@ builder.Services.AddOpenApi().AddControllers();
 {
     builder.Services.AddTransient<GetAllFlagsUseCase>();
     builder.Services.AddTransient<PatchFlagUseCase>();
-    // TODO This should be transient, but I'm storing data and I want it to be the same across all requests 
-    builder.Services.AddSingleton<IFlagsRepository, FlagsRepository>();
+    builder.Services.AddTransient<IFlagsRepository, FlagsRepository>();
 
-    builder.Services.AddDbContextPool<FeatureContext>(options =>
+    builder.Services.AddDbContextPool<FlagsContext>(options =>
         options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection"),
             b => b.MigrationsAssembly("Flags.Api"))
     );

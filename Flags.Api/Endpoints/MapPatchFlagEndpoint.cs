@@ -8,16 +8,16 @@ public static class MapPatchFlagEndpointExtensions
 {
     public static void MapPatchFlagEndpointExtension(this WebApplication app)
     {
-        app.MapPatch("flags/{id}", Task<IResult>
+        app.MapPatch("flags/{id}", async Task<IResult>
             ([FromRoute] string id, [FromBody] PatchFlagCmd cmd,
                 [FromServices] PatchFlagUseCase useCase, CancellationToken ct) =>
             {
-                var result = useCase.Execute(id, cmd, ct);
+                var result = await useCase.Execute(id, cmd, ct);
                 return result switch
                 {
-                    { IsSuccess: true } => Task.FromResult(Results.Ok(result.Value)),
+                    { IsSuccess: true } => Results.Ok(result.Value),
+                    _ => Results.NotFound()
                     // TODO I should throw 500 in case something unexpected happens
-                    _ => Task.FromResult(Results.NotFound())
                 };
             })
             .Produces<FlagDto>()

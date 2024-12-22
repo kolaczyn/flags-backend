@@ -1,63 +1,35 @@
-using Dapper;
 using Flags.Domain.Errors;
 using Flags.Domain.Models;
 using Flags.Domain.Repositories;
+using Flags.Infrastructure.EFCore;
+using Flags.Infrastructure.Mappers;
+using Flags.Infrastructure.Models;
 using FluentResults;
-using Microsoft.Extensions.Configuration;
-using Npgsql;
+using Microsoft.EntityFrameworkCore;
 
 namespace Flags.Infrastructure.Repositories;
 
-public sealed class FlagsRepository(IConfiguration configuration) : IFlagsRepository
+public sealed class FlagsRepository(FlagsContext flagsContext) : IFlagsRepository
 {
-    private readonly IConfiguration _configuration = configuration;
-    // private NpgsqlConnection _connection;
-
-    private FlagDomain[] _flags =
-    [
-        new(Id: "1", Label: "greetUser", Value: true),
-        new(Id: "2", Label: "aboutSection", Value: false)
-    ];
-
     public async Task<FlagDomain[]> GetAll(CancellationToken ct)
     {
-        var rows = await TestConnection(ct);
-        Console.WriteLine($"Got: {rows}");
-        return _flags;
+        return await flagsContext.Set<FlagDb>().Select(x => x.ToDomain()).ToArrayAsync(ct);
     }
 
-    public Result<FlagDomain> PatchFlag(string id, bool value, CancellationToken ct)
+    public async Task<Result<FlagDomain>> PatchFlag(string id, bool value, CancellationToken ct)
     {
-        var found = _flags.FirstOrDefault(x => x.Id == id);
+        var idInt = int.Parse(id);
+
+        var found = await flagsContext.Set<FlagDb>().FirstOrDefaultAsync(x => x.Id == idInt, ct);
         if (found == null)
         {
             return Result.Fail<FlagDomain>(new FlagDoesNotExist());
         }
 
-        _flags = _flags.Select(x => x.Id == id ? new FlagDomain(Id: id, Label: x.Label, Value: value) : x).ToArray();
+        found.Enabled = value;
 
-        var foundAfterChange = _flags.FirstOrDefault(x => x.Id == id)!;
+        await flagsContext.SaveChangesAsync(ct);
 
-        return Result.Ok<FlagDomain>(foundAfterChange);
-    }
-
-    private string ConnectionString() =>
-        // TODO I should throw error if it's null
-        _configuration.GetConnectionString("PostgresConnection")!;
-
-    // TODO refactor this later
-    private NpgsqlConnection GetConnection()
-    {
-        // NpgsqlDataSource.create lepiej reużywa połączenia
-        // Npgsql.DependencyInjection
-// 
-        return new NpgsqlConnection(ConnectionString());
-    }
-
-    private async Task<string> TestConnection(CancellationToken ct)
-    {
-        await using var connection = GetConnection();
-        var result = await connection.QueryFirstAsync<string>("SELECT 'Hello World'", ct);
-        return result ?? "Nothing";
+        return Result.Ok(found.ToDomain());
     }
 }
