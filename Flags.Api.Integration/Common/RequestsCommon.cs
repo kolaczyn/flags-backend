@@ -11,10 +11,11 @@ public class RequestsCommon
         WriteIndented = true
     };
 
-    public async Task<T?> GetRequestContent<T>(HttpResponseMessage httpResponseMessage)
+    public async Task<T> GetRequestContent<T>(HttpResponseMessage httpResponseMessage)
     {
         var result =
             JsonSerializer.Deserialize<T>(await httpResponseMessage.Content.ReadAsStringAsync(), _jsonSettings);
+
         if (result is null)
         {
             throw new ApplicationException("GetRequestContent failed");
