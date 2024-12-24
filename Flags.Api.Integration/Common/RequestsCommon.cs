@@ -3,19 +3,24 @@ using System.Text.Json;
 
 namespace Flags.Tests.Common;
 
-public static class RequestsCommon
+public class RequestsCommon
 {
-    public static async Task<T?> GetRequestContent<T>(HttpResponseMessage httpResponseMessage)
+    private readonly JsonSerializerOptions _jsonSettings = new()
     {
-        // TODO maybe reuse to make it more performant. That would probably mean changing it from static to e.g. base class
-        var jsonSettings = new JsonSerializerOptions
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            WriteIndented = true
-        };
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        WriteIndented = true
+    };
 
-        // Maybe I should throw error? This should be fine in tests
-        return JsonSerializer.Deserialize<T>(await httpResponseMessage.Content.ReadAsStringAsync(), jsonSettings);
+    public async Task<T?> GetRequestContent<T>(HttpResponseMessage httpResponseMessage)
+    {
+        var result =
+            JsonSerializer.Deserialize<T>(await httpResponseMessage.Content.ReadAsStringAsync(), _jsonSettings);
+        if (result is null)
+        {
+            throw new ApplicationException("GetRequestContent failed");
+        }
+
+        return result;
     }
 
     public static StringContent BuildRequestContent<T>(T request)

@@ -1,15 +1,12 @@
 using Flags.Application.Dto;
 using Flags.Tests.Common;
 using FluentAssertions;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Testcontainers.PostgreSql;
 
 namespace Flags.Tests.Endpoints;
 
-public sealed class GetAllFlagsTest(FlagsApplicationFactory factory)
-    : IClassFixture<FlagsApplicationFactory>, IAsyncLifetime
+public sealed class GetAllFlagsTest(FlagsApplicationFactory factory, RequestsCommon requestsCommon)
+    : IClassFixture<FlagsApplicationFactory>, IClassFixture<RequestsCommon>, IAsyncLifetime
 {
     private readonly PostgreSqlContainer _postgres = new PostgreSqlBuilder()
         .WithImage("postgres:15-alpine")
@@ -23,7 +20,7 @@ public sealed class GetAllFlagsTest(FlagsApplicationFactory factory)
         var response = await client.GetAsync("/flags");
         response.EnsureSuccessStatusCode();
 
-        var content = await RequestsCommon.GetRequestContent<IEnumerable<FlagDto>>(response);
+        var content = await requestsCommon.GetRequestContent<IEnumerable<FlagDto>>(response);
 
         // This should do for now
         content.Should().HaveCount(2);
@@ -40,7 +37,7 @@ public sealed class GetAllFlagsTest(FlagsApplicationFactory factory)
             var response = await client.GetAsync("/flags");
             response.EnsureSuccessStatusCode();
 
-            var content = await RequestsCommon.GetRequestContent<IEnumerable<FlagDto>>(response);
+            var content = await requestsCommon.GetRequestContent<IEnumerable<FlagDto>>(response);
 
             content.Should().SatisfyRespectively(
                 first => first.Value.Should().BeTrue(),
@@ -55,7 +52,7 @@ public sealed class GetAllFlagsTest(FlagsApplicationFactory factory)
 
             var response = await client.PatchAsync("/flags/1", dataJson);
             response.EnsureSuccessStatusCode();
-            var content = await RequestsCommon.GetRequestContent<FlagDto>(response);
+            var content = await requestsCommon.GetRequestContent<FlagDto>(response);
 
             content!.Value.Should().Be(patchData.Value);
         }
@@ -65,7 +62,7 @@ public sealed class GetAllFlagsTest(FlagsApplicationFactory factory)
             var response = await client.GetAsync("/flags");
             response.EnsureSuccessStatusCode();
 
-            var content = await RequestsCommon.GetRequestContent<IEnumerable<FlagDto>>(response);
+            var content = await requestsCommon.GetRequestContent<IEnumerable<FlagDto>>(response);
 
             content.Should().SatisfyRespectively(
                 first => first.Value.Should().BeFalse(),
