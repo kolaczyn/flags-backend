@@ -53,7 +53,8 @@ public sealed class GetAllFlagsTest(RequestsCommon requestsCommon)
             response.EnsureSuccessStatusCode();
             var content = await requestsCommon.GetRequestContent<FlagDto>(response);
 
-            content.Should().BeEquivalentTo(new FlagDto(Id: "1", Label: "firstFlag", Value: false));
+            content.Should()
+                .BeEquivalentTo(new FlagDto(Id: "1", Label: "firstFlag", Value: false, Array.Empty<GroupDto>()));
         }
         {
             var payload = new PatchFlagCmd(Value: false);
@@ -63,7 +64,8 @@ public sealed class GetAllFlagsTest(RequestsCommon requestsCommon)
             response.EnsureSuccessStatusCode();
             var content = await requestsCommon.GetRequestContent<FlagDto>(response);
 
-            content.Should().BeEquivalentTo(new FlagDto(Id: "1", Label: "firstFlag", Value: false));
+            content.Should()
+                .BeEquivalentTo(new FlagDto(Id: "1", Label: "firstFlag", Value: false, Array.Empty<GroupDto>()));
         }
 
         // TODO check GET
