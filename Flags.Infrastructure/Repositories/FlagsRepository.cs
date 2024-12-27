@@ -13,7 +13,8 @@ public sealed class FlagsRepository(FlagsContext flagsContext) : IFlagsRepositor
 {
     public async Task<FlagDomain[]> GetAll(CancellationToken ct)
     {
-        return await flagsContext.Set<FlagDb>().Select(x => x.ToDomain()).ToArrayAsync(ct);
+        return await flagsContext.Set<FlagDb>().OrderBy(x => x.Id)
+            .Select(x => x.ToDomain()).ToArrayAsync(ct);
     }
 
     public async Task<Result<FlagDomain>> PostFlag(string label, CancellationToken ct)
